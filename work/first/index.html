@@ -70,15 +70,67 @@
 <script src="../../common/js/jquery.js"></script>
 <script>
 // 第1問  id='q1'の要素の文字色を赤色にせよ。
+
+$("#q1").css("color","red");// #q1にcssメソッドを指定しプロパティにcolor、値にredを設定
+
 // 第2問  id='q2'の要素をクリックしたら背景色をピンクにせよ。
+
+$("#q2").click(function(){ // #q2に対しclickメソッドを指定
+  $("#q2").css("background-color","pink") //clickメソッドが実行された時、#q2に対しプロパティにbackground-color、値にpinkを設定
+});
 // 第3問  id='q3'の要素をクリックしたら2秒かけてフェードアウトさせよ。
+$("#q3").click(function(){ // #q3に対しclickメソッドを指定
+  $("#q3").fadeOut(2000); //　#q3に対しfadeoutメソッドを2000msで指定
+});
+
 // 第4問  id='q4'の要素をクリックしたらこの要素の前後とこの要素内の前後にテキストを挿入せよ。
+$("#q4").click(function(){
+  //要素内の前にテキストを挿入
+  $("#q4").prepend("DOMの中の前")//要素内の先頭に追加
+  //要素内の後にテキストを挿入
+  $("#q4").append('DOMの中の後')//要素内の末尾に追加
+  //要素の前にテキストを挿入
+  $("#q4").before('DOMの前')//要素の前に追加
+  //要素の後にテキストを挿入
+  $("#q4").after('DOMの後')////要素の後に追加
+});
 // 第5問  id='q5'の要素をクリックしたらこの要素にlargeというクラスを付与せよ。
+$("#q5").click(function(){ //#q5にclickメソッドを指定
+  $("#q5").addClass("large");//#q5にlargeクラスを指定
+});
 // 第6問  id='q6'の要素をクリックしたらこの要素を2秒かけてmargin-topとmargin-leftを100pxの位置に移動させよ。
+$("#q6").click(function(){
+  $("#q6").animate({ //第一引数にanimateメソッドを指定
+    'marginLeft': 100,
+    'marginTop': 100
+    }, 2000);//第二引数で2000msかけてanimeteが実行される様指定
+  });
 // 第7問  id='q7'の子要素をクリックしたら、その要素のインデックス（何番目か）をconsole.log()とalert()を用いて表示させよ。
+$("#q7").find("li").click(function(){
+  var index = $('li').index(this);//クリックしたindex番号を取得
+  alert(index);
+  console.log("インデックス" + index + "番目");
+});
 // 第8問  id='q8'の要素をhoverしたらlargeというクラスを付与し、hoverが外れたら、クラスを削除せよ。
+$("#q8").mouseover(function(){
+  $("#q8").addClass("large");
+});
+
+$("#q8").mouseout(function(){
+  $("#q8").removeClass("large");
+});
 // 第9問  id='q9'の要素をクリックしたらこの要素に設定してあるdata属性をconsoleに表示せよ。
+$("#q9").click(function(){
+ var result =  $("#q9").data();
+  console.log(result);//data-textを取得
+});
 // 第10問 id='q10'の子要素をクリックしたら、その要素のインデックスと等しいid='q11'の子要素にlargeというクラスを追加せよ。
+$("#q10").find("li").click(function(){
+//q10の子要素をindexを取得
+  var index = $(this).index();
+//q10の子要素のインデックスと等しいq11の子要素にlargeというクラスを追加
+$("#q11").find("li").eq(index).addClass("large");
+});
 </script>
 </body>
 </html>

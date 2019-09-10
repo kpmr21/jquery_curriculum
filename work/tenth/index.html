@@ -12,23 +12,60 @@
   <body>
     <div class="wrap">
       <div class="container">
+
         <div class="header">
           <p class="header__title">Search Books!</p>
         </div>
+
         <div class="search">
           <div class="search__text">
             <input type="text" id="js-search-word" class="search__text__input" placeholder="検索する">
           </div>
           <button id="js-search-button" class="search__btn">検索する</button>
         </div>
+
         <ul class="lists"></ul>
       </div>
     </div>
     <script src="../../common/js/jquery.js"></script>
     <script>
+      $(function(){
+        $("#js-search-button").click(function(){
+          var keyword = $("#js-search-word").val();
+          $.ajax({
+            url: 'https://app.rakuten.co.jp/services/api/BooksTotal/Search/20130522',
+            type: 'GET',
+            datatype: 'json',
+            data: {
+              // 「区分:サービス固有パラメーター」を確認して、必要な情報をdata内に入れましょう。
+              applicationId: '1019399324990976605', // (今回はこのIDを使用してください)
+              booksGenreId: '001',
+              hits:20
+            },
+          }).done(function(data) {
+         // この中にデータ取得後の動きを記述していきます。
+         if( data.count > 0 ){
+          console.log(data);
+           $.each(data.Items,function(i,item){
+            console.log(i);
+            console.log(item)
+            var temp = $(`<li class='lists__item'><div class='lists__item__inner'>
+            <a href="${item.Item.itemUrl}"　class='lists__item__link' target='_blank'></a>
+            <img src="${item.Item.mediumImageUrl}" class='lists__item__img' alt=''>
+            <p class='lists__item__detail'>作品名：${item.Item.title}</p>
+            <p class='lists__item__detail'>作者　：${item.Item.author}</p>
+            <p class='lists__item__detail'>出版社：${item.Item.publisherName}</p></div></li>`)
+            $('ul').append(temp);
+             })
+            }
+            else{
+              console.log("確認");
+            }
+          });
+        });
+      })
       // 楽天ブックスの総合検索APIを使って製作してください。
       // answerの挙動を良く見てね！
-      //
       // 下記URLにAPIの仕様が載ってるいので、ブラウザで開いて参考にしてください。
       // https://webservice.rakuten.co.jp/api/bookstotalsearch/
       //

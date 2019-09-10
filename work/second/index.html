@@ -13,20 +13,36 @@
     <div class="wrapper">
       <p class="modal-show">Click</p>
       <div class="modal" style="display: none;">
+        
         <div class="modal-content">
           <div class="modal-text">MODAL WINDOW</div>
           <button type="button" class="modal-close">x</button>
         </div>
+
       </div>
     </div>
     <script src="../../common/js/jquery.js"></script>
     <script>
       // 今回やるのはモーダルです。
-      // .modal-show をクリックすることで .modal をfadeInさせる。
-      // .modal-close をクリックで .modal をfadeOutさせる。
       // .click() クリック時のイベントを登録する。
-      // .fadeIn() 一定時間かけてフェードインする。
-      // .fadeOut() 一定時間かけてフェードアウトする。
+
+      // .modal-show をクリックした時の関数処理
+      $(".modal-show").click(function(){
+        
+        //.modal をfadeInさせる。
+        $(".modal").fadeIn(500);  // .fadeIn() 一定時間かけてフェードインする。
+      
+      });
+      // .modal-show をクリックした時の関数処理ここまで
+
+      // .modal-close をクリックした時の関数処理
+      $(".modal-close").click(function(){
+        
+        //.modal をfadeOutさせる。
+        $(".modal").fadeOut(500); // .fadeOut() 一定時間かけてフェードアウトする。
+      
+      });
+      // .modal-close をクリックした時の関数処理ここまで
     </script>
   </body>
 </html>
