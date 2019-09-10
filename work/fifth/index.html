@@ -84,41 +84,41 @@
     </div>
     <script src="../../common/js/jquery.js"></script>
     <script>
-      // 今回やるのはソート機能です。
-      // selectボックスをクリックして言語を選び、その言語と関係のあるリストだけが表示されるプログラムです。
-      // [処理の流れ]
-      // [使うメソッド]
+    // 今回やるのはソート機能です。
+    // selectボックスをクリックして言語を選び、その言語と関係のあるリストだけが表示されるプログラムです。
+    // [処理の流れ]
+    // [使うメソッド]
 
     // ・セレクトボックスをクリックする。
     $(function() {
-    // .change() セレクトボックスの値の変更をキャッチする関数
-    $(".select").change(function(){
-    // .val() 要素のvalueを取得
-    var value = $(this).val();//$(this).val();選択した要素の値を取得
-    console.log(value);
-    // Allを選択した場合のみ全てのliを表示させる。
-    if(value=="all"){
-    // $().each() DOM要素を1つずつループ処理をする（ループ内で$(this)を使うと要素がひとつずつ取得できる）
-      $('ul.list li').each(function(){
-        $(this).show() });
-      }
-    else {
-    // $().each() DOM要素を1つずつループ処理をする（ループ内で$(this)を使うと要素がひとつずつ取得できる）
-      $('ul.list li').each(function(){
-    // セレクトボックスのvalueとliのdata-category-typeが一致しているものをだけ表示させる。
-    // data('') DOM要素にあるdata-~を取得できる
-        if($(this).data("category-type")==value){
-          // .show() 要素を表示させる
-          $(this).show();
-        } else {
-          // .hide() 要素を隠す
-          $(this).hide();
+      // .change() セレクトボックスの値の変更をキャッチする関数
+      $(".select").change(function(){
+        // .val() 要素のvalueを取得
+        var value = $(this).val();//$(this).val();選択した要素の値を取得
+        console.log(value);
+        // Allを選択した場合のみ全てのliを表示させる。
+        if(value=="all"){
+          // $().each() DOM要素を1つずつループ処理をする（ループ内で$(this)を使うと要素がひとつずつ取得できる）
+          $('ul li').each(function(){
+            $(this).show()});// 全ての ul > liを１つずつ表示する this = ul > li
           }
+          else {
+            // $().each() DOM要素を1つずつループ処理をする（ループ内で$(this)を使うと要素がひとつずつ取得できる）
+            $('ul li').each(function(){
+              // セレクトボックスのvalueとliのdata-category-typeが一致しているものをだけ表示させる。
+              // data('') DOM要素にあるdata-~を取得できる
+              if($(this).data("category-type")==value){
+                // .show() 要素を表示させる
+                $(this).show();// valeと一致したcategory-typeをもつli要素を1つずつ表示
+                console.log(this);
+              } else {
+                // .hide() 要素を隠す
+                $(this).hide();
+                }
+              });
+            }
+          });
         });
-      }
-    });
-  });
-
     </script>
   </body>
 </html>

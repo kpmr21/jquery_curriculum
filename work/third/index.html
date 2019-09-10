@@ -24,19 +24,19 @@
     </div>
     <script src="../../common/js/jquery.js"></script>
     <script>
-      // 今回やるのはタブメニューです。
-      // navの小要素であるliをクリックして、contents内の小要素であるli要素を表示させる。
+    // 今回やるのはタブメニューです。
+    // navの小要素であるliをクリックして、contents内の小要素であるli要素を表示させる。
+    $(function(){
       $(".nav").find("li").click(function(){
       // .index() 要素のindexを取得します。
       var index = $(this).index();
       //.contents > li 全てに対し .addClass("is-hidden")を追加します。
       $(".contents li").addClass("is-hidden");
-
       //.eq() 引数に応じたindexの要素を指定
       //.contents > liに対し .removeClass("is-hidden") を追加。
       $(".contents").find("li").eq(index).removeClass("is-hidden");
-      console.log(index);
       });
+    });
     </script>
   </body>
 </html>

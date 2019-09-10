@@ -120,14 +120,14 @@ $(function(){
   });
   // 第9問  id='q9'の要素をクリックしたらこの要素に設定してあるdata属性をconsoleに表示せよ。
   $("#q9").click(function(){
-  var result =  $("#q9").data("text");
+    var result =  $("#q9").data("text");
     console.log(result);//data-textを取得
   });
   // 第10問 id='q10'の子要素をクリックしたら、その要素のインデックスと等しいid='q11'の子要素にlargeというクラスを追加せよ。
   $("#q10").find("li").click(function(){
-  //q10の子要素をindexを取得
+    //q10の子要素をindexを取得
     var index = $(this).index();
-  //q10の子要素のインデックスと等しいq11の子要素にlargeというクラスを追加
+    //q10の子要素のインデックスと等しいq11の子要素にlargeというクラスを追加
     $("#q11").find("li").eq(index).addClass("large");
   });
 });

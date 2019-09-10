@@ -68,7 +68,8 @@
           })
           .fail(function(){
             console.log("fail error")
-            var failError = $("<p class = message >検索結果が見つかりませんでした</p>")
+            $("ul").empty();
+            var failError = $("<p class = message >ネットワークと接続されいません</p>")
             $('ul').append(failError);
           });
         });
