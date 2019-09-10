@@ -30,14 +30,12 @@
       // .index() 要素のindexを取得します。
       var index = $(this).index();
       //.contents > li 全てに対し .addClass("is-hidden")を追加します。
-      var add = $(".contents li").addClass("is-hidden");
+      $(".contents li").addClass("is-hidden");
 
       //.eq() 引数に応じたindexの要素を指定
       //.contents > liに対し .removeClass("is-hidden") を追加。
-      var remove = $(".contents").find("li").eq(index).removeClass("is-hidden");
+      $(".contents").find("li").eq(index).removeClass("is-hidden");
       console.log(index);
-      console.log(add);
-      console.log(remove);
       });
     </script>
   </body>

@@ -40,15 +40,17 @@
               // 「区分:サービス固有パラメーター」を確認して、必要な情報をdata内に入れましょう。
               applicationId: '1019399324990976605', // (今回はこのIDを使用してください)
               booksGenreId: '001',
+              keyword:keyword,
               hits:20
             },
           }).done(function(data) {
          // この中にデータ取得後の動きを記述していきます。
          if( data.count > 0 ){
+          $("ul").empty();
           console.log(data);
            $.each(data.Items,function(i,item){
             console.log(i);
-            console.log(item)
+            console.log(item);
             var temp = $(`<li class='lists__item'><div class='lists__item__inner'>
             <a href="${item.Item.itemUrl}"　class='lists__item__link' target='_blank'></a>
             <img src="${item.Item.mediumImageUrl}" class='lists__item__img' alt=''>
@@ -59,8 +61,15 @@
              })
             }
             else{
-              console.log("確認");
+              $("ul").empty();
+              var none = $("<p class = message >検索結果が見つかりませんでした</p>")
+              $('ul').append(none);
             }
+          })
+          .fail(function(){
+            console.log("fail error")
+            var failError = $("<p class = message >検索結果が見つかりませんでした</p>")
+            $('ul').append(failError);
           });
         });
       })
