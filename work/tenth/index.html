@@ -29,51 +29,96 @@
     </div>
     <script src="../../common/js/jquery.js"></script>
     <script>
-      $(function(){
-        $("#js-search-button").click(function(){
-          var keyword = $("#js-search-word").val();
-          $.ajax({
-            url: 'https://app.rakuten.co.jp/services/api/BooksTotal/Search/20130522',
-            type: 'GET',
-            datatype: 'json',
-            data: {
-              // 「区分:サービス固有パラメーター」を確認して、必要な情報をdata内に入れましょう。
-              applicationId: '1019399324990976605', // (今回はこのIDを使用してください)
-              booksGenreId: '001',
-              keyword:keyword,
-              hits:20
-            },
-          }).done(function(data) {
-         // この中にデータ取得後の動きを記述していきます。
-         if( data.count > 0 ){
-          $("ul").empty();
-          console.log(data);
-           $.each(data.Items,function(i,item){
-            console.log(i);
-            console.log(item);
-            var temp = $(`<li class='lists__item'><div class='lists__item__inner'>
-            <a href="${item.Item.itemUrl}"　class='lists__item__link' target='_blank'></a>
-            <img src="${item.Item.mediumImageUrl}" class='lists__item__img' alt=''>
-            <p class='lists__item__detail'>作品名：${item.Item.title}</p>
-            <p class='lists__item__detail'>作者　：${item.Item.author}</p>
-            <p class='lists__item__detail'>出版社：${item.Item.publisherName}</p></div></li>`)
-            $('ul').append(temp);
-             })
-            }
-            else{
-              $("ul").empty();
-              var none = $("<p class = message >検索結果が見つかりませんでした</p>")
-              $('ul').append(none);
-            }
-          })
-          .fail(function(){
-            console.log("fail error")
-            $("ul").empty();
-            var failError = $("<p class = message >ネットワークと接続されいません</p>")
-            $('ul').append(failError);
-          });
-        });
+    $(function(){
+      $("#js-search-button").on("click",function(){
+        js_searchButton_clickActive();
+      });
+
+      function js_searchButton_clickActive(){
+        var keyword = $("#js-search-word").val();
+        $.ajax({
+          url: 'https://app.rakuten.co.jp/services/api/BooksTotal/Search/20130522',
+          type: 'GET',
+          datatype: 'json',
+          data: {
+          // 「区分:サービス固有パラメーター」を確認して、必要な情報をdata内に入れましょう。
+          applicationId: '1019399324990976605', // (今回はこのIDを使用してください)
+          booksGenreId: '001',
+          keyword:keyword,
+          hits:20
+        },
       })
+      // 非同期通信に成功した場合の処理
+      // 非同期通信に成功した時の即時関数の第一引数(data)の中には、サーバから返されたデータが入っている
+      .done(function ajax_success(ajax_succes_data) {
+        // 取得したdata内のcount > 0 の場合の処理
+        if( ajax_succes_data.count > 0 ){
+           console.log(ajax_succes_data); // 非同期通信に成功した場合のdataを表示
+          // $.each(配列, function() {}) data > Itemsの配列に対しての繰り返し処理
+          $.each(ajax_succes_data.Items,function(index,in_Items_value){ // item => Itemsのvalueが入っている index => item内のItemsのvalueのindex
+              // console.log(index);
+              // console.log(item);
+              var dataInformation = $(`<li class='lists__item'><div class='lists__item__inner'>
+              <a href="${in_Items_value.Item.itemUrl}"　class='lists__item__link' target='_blank'></a>
+              <img src="${in_Items_value.Item.mediumImageUrl}" class='lists__item__img' alt=''>
+              <p class='lists__item__detail'>作品名：${in_Items_value.Item.title}</p>
+              <p class='lists__item__detail'>作者　：${in_Items_value.Item.author}</p>
+              <p class='lists__item__detail'>出版社：${in_Items_value.Item.publisherName}</p>
+              </div></li>`)
+              $('ul').prepend(dataInformation);　//要素内の先頭に追加
+
+              // 検索文字を変更した場合の処理
+              $("#js-search-word").on("change",function(){
+                $("ul").empty();　// 指定した要素の内容（子孫要素やテキストなど）を削除
+                var dataInformation = $(`<li class='lists__item'><div class='lists__item__inner'>
+                <a href="${in_Items_value.Item.itemUrl}"　class='lists__item__link' target='_blank'></a>
+                <img src="${item.Item.mediumImageUrl}" class='lists__item__img' alt=''>
+                <p class='lists__item__detail'>作品名：${in_Items_value.Item.title}</p>
+                <p class='lists__item__detail'>作者　：${in_Items_value.Item.author}</p>
+                <p class='lists__item__detail'>出版社：${in_Items_value.Item.publisherName}</p>
+                </div></li>`)
+                $('ul').prepend(dataInformation);
+              });
+           });
+          }
+        // 取得したdata内のcount = 0 の場合の処理
+        else{
+        $("ul").empty();
+        var dataInformation_none = $("<p class = message >検索結果が見つかりませんでした</p>")
+        $('ul').prepend(dataInformation_none);
+      }
+    })
+      // 非同期通信に失敗した場合の処理
+      .fail(function ajax_error (ajax_error_data) {
+        console.log(ajax_error_data); // 非同期通信に失敗した場合のdataを表示
+        //ネットワーク : 切断時
+        if( ajax_error_data.readyState === 0 ){ //readyState => https://qiita.com/ShinyaKato/items/64b6726c361f5377b0f3
+          $("ul").empty();
+          var network_errorMessage = $("<p class = message >ネットワークに接続されていません</p>");
+          $('ul').prepend(network_errorMessage);
+        };
+         // ネットワーク : 接続時
+         // 検索テキストが空白の時
+        if(ajax_error_data.responseJSON.error_description === "keyword must be set"){ // responseJSON => https://qiita.com/otsukayuhi/items/31ee9a761ce3b978c87a
+          $("ul").empty();
+          var blank_text = $("<p class = message >検索する文字を入力してください</p>");
+          $('ul').prepend(blank_text);
+        }
+        // 検索テキストが半角英数字1文字の時
+        else if(ajax_error_data.responseJSON.error_description === "keyword length must be over 2 characters"){
+          $("ul").empty();
+          var lack_text = $("<p class = message >2文字以上で検索してください</p>");
+          $('ul').prepend(lack_text);
+         }
+        // 検索ボタンを連続でクリックした時
+        else if(ajax_error_data.responseJSON.error_description === "number of allowed requests has been exceeded for this API. please try again soon."){
+          $("ul").empty();
+          var manyClick_text = $("<p class = message >時間が経ってから再度、検索してください</p>");
+          $('ul').prepend(manyClick_text);
+         };
+      });
+    };
+  });
       // 楽天ブックスの総合検索APIを使って製作してください。
       // answerの挙動を良く見てね！
       // 下記URLにAPIの仕様が載ってるいので、ブラウザで開いて参考にしてください。
@@ -81,7 +126,6 @@
       //
       //
       // [使うメソッド]
-      // $.each(配列, function functionName() {}) 配列に対しての繰り返し処理
       // $.ajax({}) 外部ファイルやURLに対してデータをリクエストすることができます。
       // 以下は今回使う$.ajaxの基本的な形です。
       //
@@ -96,7 +140,7 @@
       //   },
       // }).done(function(data) {
       //   // この中にデータ取得後の動きを記述していきます。
-      //   console.log(data);
+      //   //console.log(data);
       // });
       //
       //

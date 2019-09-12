@@ -93,32 +93,29 @@
     $(function() {
       // .change() セレクトボックスの値の変更をキャッチする関数
       $(".select").change(function(){
+        $("ul li").hide();
         // .val() 要素のvalueを取得
         var value = $(this).val();//$(this).val();選択した要素の値を取得
         console.log(value);
         // Allを選択した場合のみ全てのliを表示させる。
-        if(value=="all"){
+        if(value === "all"){
           // $().each() DOM要素を1つずつループ処理をする（ループ内で$(this)を使うと要素がひとつずつ取得できる）
-          $('ul li').each(function(){
-            $(this).show()});// 全ての ul > liを１つずつ表示する this = ul > li
-          }
-          else {
+            $('ul li').show();
+            // 全ての ul > liを１つずつ表示する this = ul > li
+          } else {
             // $().each() DOM要素を1つずつループ処理をする（ループ内で$(this)を使うと要素がひとつずつ取得できる）
             $('ul li').each(function(){
               // セレクトボックスのvalueとliのdata-category-typeが一致しているものをだけ表示させる。
               // data('') DOM要素にあるdata-~を取得できる
-              if($(this).data("category-type")==value){
+              if($(this).data("category-type") === value){
                 // .show() 要素を表示させる
                 $(this).show();// valeと一致したcategory-typeをもつli要素を1つずつ表示
                 console.log(this);
-              } else {
-                // .hide() 要素を隠す
-                $(this).hide();
-                }
-              });
-            }
-          });
+              }
+            });
+          }
         });
+      });
     </script>
   </body>
 </html>
